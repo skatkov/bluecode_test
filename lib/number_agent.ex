@@ -18,6 +18,13 @@ defmodule NumberAgent do
   end
 
   @doc """
+    Drop all values
+  """
+  def clear(pid) do
+    Agent.update(pid, fn state -> state = [] end)
+  end
+
+  @doc """
   	Retrieve all numbers stored in state
   """
   def get(pid) do
