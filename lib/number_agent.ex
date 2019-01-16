@@ -1,6 +1,6 @@
 defmodule NumberAgent do
   @moduledoc """
-  	This is storage for numbers
+  	This is a simple adapter implmentation for persistant like storage
   """
 
   @doc """
@@ -21,7 +21,7 @@ defmodule NumberAgent do
     Drop all values
   """
   def clear(pid) do
-    Agent.update(pid, fn state -> state = [] end)
+    Agent.update(pid, fn _ -> _ = [] end)
   end
 
   @doc """
