@@ -17,5 +17,5 @@ defmodule ApiServer.Application do
       strategy: :one_for_one,
       name: ApiServer.Supervisor
     ]
-end
+  end
 end
