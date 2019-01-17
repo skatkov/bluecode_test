@@ -7,13 +7,27 @@ defmodule ApiServer.Router do
   get "/" do
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(200, Poison.encode!(message()))
+    |> send_resp(200, Poison.encode!(message(["yeah", "baby", 11])))
   end
 
-  defp message do
+  put "/" do
+    IO.puts conn.params["n"]
+
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, Poison.encode!(message(["yeah", "baby", 222])))
+  end
+
+  get "/checksum" do
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, Poison.encode!(message(["yeah", "baby", 333])))
+  end
+
+  defp message(body) do
     %{
       status: "OK",
-      body: "yeah, baby!"
+      body: body
     }
   end
 end
