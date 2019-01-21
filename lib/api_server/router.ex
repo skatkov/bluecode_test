@@ -10,8 +10,10 @@ defmodule ApiServer.Router do
     |> send_resp(200, Poison.encode!(message(["yeah", "baby", 11])))
   end
 
-  put "/" do
-    IO.puts conn.params["n"]
+  put "/:numbers" do
+    IO.puts numbers
+    #%{agent: agent} = conn[:private]
+    IO.puts conn[:private]
 
     conn
     |> put_resp_content_type("application/json")
