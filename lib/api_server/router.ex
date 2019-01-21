@@ -7,23 +7,23 @@ defmodule ApiServer.Router do
   get "/" do
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(200, message(ApiServer.NumberServer.get))
+    |> send_resp(200, message(NumberServer.get))
   end
 
   post "/:numbers" do
-    ApiServer.NumberServer.append(retrieve_list(numbers))
+    NumberServer.append(retrieve_list(numbers))
 
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(200, message(ApiServer.NumberServer.get))
+    |> send_resp(200, message(NumberServer.get))
   end
 
   delete "/" do
-    ApiServer.NumberServer.clear
+    NumberServer.clear
 
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(200, message(ApiServer.NumberServer.get))
+    |> send_resp(200, message(NumberServer.get))
   end
 
   get "/checksum" do
