@@ -16,6 +16,15 @@ defmodule ApiServer.RouterTest do
     assert Poison.decode!(conn.resp_body)["status"] == "OK"
   end
 
+  test 'post' do
+    conn = conn(:post, "/123")
+    conn = ApiServer.Router.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 200
+    assert Poison.decode!(conn.resp_body)["status"] == "OK"
+  end
+
   test 'clear' do
     conn = conn(:delete, "/")
     conn = ApiServer.Router.call(conn, @opts)

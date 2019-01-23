@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rubygems'
 require 'rest-client'
 require 'json'
@@ -11,11 +13,14 @@ require 'pry'
 
 class TestReportSystem < MiniTest::Test
 	def setup
-	  #@browser = Object.new
+		#@pid = fork do
+		#  exec "mix run --no-halt"
+		#end
 	end
 
 	def teardown
-	  #@browser.close
+		#Process.kill "TERM", @pid
+		#Process.wait @pid
 	end
 
 	def test_scenario
@@ -59,20 +64,38 @@ class TestReportSystem < MiniTest::Test
 		run_scenario(scenario)
 	end
 
+	BASE_URL = 'http://localhost:4000/api'
+
 
 	def run_scenario(commands)
+		checksum = ""
 		commands.each_line do |row|
 			numbers = cleanup_string(row.gsub(/[^\d]/, ''))
+			command = extract_command(row)
 
-			case extract_command(row)
+			case command
 				when 'CS'
 					puts "Checksum: #{numbers}"
+					response = RestClient.get(BASE_URL + '/checksum')
+					body = JSON.parse(response.body)
+					assert_equal body["status"], 'OK'
+					checksum = checksum + body['body'].join
 				when 'C'
 					puts "Clear: #{numbers}"
+					response = RestClient.delete(BASE_URL)
+					assert_equal JSON.parse(response.body)["status"], 'OK'
 				when 'A'
 					puts "Append: #{numbers}"
+					response = RestClient.post(BASE_URL+'/'+numbers, "" , content_type: 'application/json')
+					assert_equal JSON.parse(response.body)["status"], 'OK'
+				else
+					puts "Command not recognised: #{command}"
 			end
+		rescue RestClient::InternalServerError => e
+			binding.pry
 		end
+
+		puts checksum
 	end
 
 	def extract_command(row)
