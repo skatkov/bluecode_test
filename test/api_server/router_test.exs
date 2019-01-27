@@ -9,6 +9,7 @@ defmodule ApiServer.RouterTest do
 
   test "get" do
     NumberServer.start_link([])
+    NumberServer.clear
 
     conn = conn(:get, "/")
     conn = ApiServer.Router.call(conn, @opts)
@@ -36,6 +37,21 @@ defmodule ApiServer.RouterTest do
     conn = ApiServer.Router.call(conn, @opts)
 
     assert Poison.decode!(conn.resp_body)["body"] == [1,2,3,8,7,6]
+  end
+
+  test "checksum" do
+    NumberServer.start_link([])
+
+    
+    ApiServer.Router.call(conn(:post, "/123"), @opts)
+
+    conn = conn(:get, "/checksum")
+    conn = ApiServer.Router.call(conn, @opts)
+    body = Poison.decode!(conn.resp_body)
+
+    assert conn.status == 200
+    assert body["status"] == "OK"
+    assert body["body"] == 6
   end
 
   test 'clear' do

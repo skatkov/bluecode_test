@@ -3,8 +3,8 @@ defmodule NumberServer do
 
 	# Client
 
-	def start_link(default) when is_list(default) do
-    GenServer.start_link(__MODULE__, default, name: __MODULE__)
+	def start_link(_default) do
+    GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   def get do
