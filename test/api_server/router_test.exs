@@ -8,7 +8,7 @@ defmodule ApiServer.RouterTest do
   @opts ApiServer.Router.init([])
 
   test "get" do
-    NumberServer.start_link
+    NumberServer.start_link([])
 
     conn = conn(:get, "/")
     conn = ApiServer.Router.call(conn, @opts)
@@ -21,7 +21,7 @@ defmodule ApiServer.RouterTest do
   end
 
   test 'post' do
-    NumberServer.start_link
+    NumberServer.start_link([])
     
     conn = conn(:post, "/123")
     conn = ApiServer.Router.call(conn, @opts)
@@ -39,7 +39,7 @@ defmodule ApiServer.RouterTest do
   end
 
   test 'clear' do
-    NumberServer.start_link
+    NumberServer.start_link([])
 
     conn = conn(:post, "/123")
     conn = ApiServer.Router.call(conn, @opts)

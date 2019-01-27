@@ -8,7 +8,8 @@ defmodule ApiServer.Application do
 
   defp children do
     [
-      ApiServer.Endpoint
+      ApiServer.Endpoint,
+      NumberServer
     ]
   end
 

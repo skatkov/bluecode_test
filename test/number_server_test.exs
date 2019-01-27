@@ -2,7 +2,8 @@ defmodule ApiServer.NumberServerTest do
 	use ExUnit.Case
 
   test "appends numbers" do
-  	{:ok, _} = GenServer.start_link(NumberServer, [], name: NumberServer)
+  	GenServer.start_link(NumberServer, [], name: NumberServer)
+    NumberServer.clear
 
   	assert NumberServer.get == []
   	NumberServer.append([1, 2, 3])
@@ -12,7 +13,7 @@ defmodule ApiServer.NumberServerTest do
   end
 
   test 'clean up state' do
-  	{:ok, _} = GenServer.start_link(NumberServer, [], name: NumberServer)
+  	GenServer.start_link(NumberServer, [], name: NumberServer)
 
   	NumberServer.append([1,2,3])
   	NumberServer.clear
@@ -22,7 +23,8 @@ defmodule ApiServer.NumberServerTest do
 
 
   test 'checksum' do
-  	{:ok, _} = GenServer.start_link(NumberServer, [], name: NumberServer)
+  	GenServer.start_link(NumberServer, [], name: NumberServer)
+    NumberServer.clear
 
   	NumberServer.append([5, 4, 8, 9, 8, 5, 0, 3, 5, 4])
 
