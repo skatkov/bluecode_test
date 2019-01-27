@@ -27,9 +27,24 @@ defmodule ApiServer.Router do
   end
 
   get "/checksum" do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, message(["yeah", "baby", 333]))
+    case NumberServer.checksum do
+      {:timeout, _} ->
+        conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(408, error('Timeout error'))
+      result ->
+        conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(200, message(result))
+      
+    end
+  end
+
+  defp error(body) do
+    Poison.encode!(%{
+      status: "ERROR",
+      body: body
+    })
   end
 
   defp message(body) do
