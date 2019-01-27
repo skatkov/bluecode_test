@@ -23,7 +23,7 @@ defmodule ApiServer.Router do
 
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(200, message(NumberServer.get))
+    |> send_resp(200, message([]))
   end
 
   get "/checksum" do

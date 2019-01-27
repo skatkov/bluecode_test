@@ -3,8 +3,8 @@ defmodule NumberServer do
 
 	# Client
 
-	def start_link do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+	def start_link(default) when is_list(default) do
+    GenServer.start_link(__MODULE__, default, name: __MODULE__)
   end
 
   def get do
@@ -47,8 +47,11 @@ defmodule NumberServer do
 
 
   def odd_items(list), do: list -- Enum.drop_every(list, 2)
+  
   def odd_multiply(list), do: 3 * Enum.sum(odd_items(list))
+  
   def even_sum(list), do: Enum.sum(Enum.drop_every(list, 2))
+  
   def get_checksum(list) do
    result = (even_sum(list) + odd_multiply(list)) / 10
 
