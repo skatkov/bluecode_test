@@ -15,4 +15,4 @@ This is a test submission for Bluecode.
 
 # Testing
 `mix test` will run all the unit tests
-`rake test` will run test client
+`rake test` will run acceptance tests on a running instance (don't forgot to do `mix run --no-halt`)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rubygems'
 require 'rest-client'
 require 'json'
@@ -70,32 +68,29 @@ class TestReportSystem < MiniTest::Test
 	def run_scenario(commands)
 		checksum = ""
 		commands.each_line do |row|
-			numbers = cleanup_string(row.gsub(/[^\d]/, ''))
 			command = extract_command(row)
 
 			case command
 				when 'CS'
-					puts "Checksum: #{numbers}"
 					response = RestClient.get(BASE_URL + '/checksum')
 					body = JSON.parse(response.body)
 					assert_equal body["status"], 'OK'
-					checksum = checksum + body['body'].join
+					puts "Checksum: #{body['body']}"
+					checksum << body['body'].to_s
 				when 'C'
-					puts "Clear: #{numbers}"
 					response = RestClient.delete(BASE_URL)
 					assert_equal JSON.parse(response.body)["status"], 'OK'
 				when 'A'
+					numbers = cleanup_string(row.gsub(/[^\d]/, ''))
 					puts "Append: #{numbers}"
 					response = RestClient.post(BASE_URL+'/'+numbers, "" , content_type: 'application/json')
 					assert_equal JSON.parse(response.body)["status"], 'OK'
-				else
-					puts "Command not recognised: #{command}"
 			end
 		rescue RestClient::InternalServerError => e
-			binding.pry
+			puts e.message.inspect
 		end
 
-		puts checksum
+		puts "Checksum calculation is equal to #{checksum}" 
 	end
 
 	def extract_command(row)
